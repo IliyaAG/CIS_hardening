@@ -1,2 +1,11 @@
 ---
 # tasks file for rhel8
+- name: Include prelim tasks
+  tags: always
+  ansible.builtin.import_tasks:
+    file: prelim.yml
+
+- name: Run Section 1 tasks
+  when: 1-filesystem
+  ansible.builtin.import_tasks:
+    file: 1-filesystem/main.yml

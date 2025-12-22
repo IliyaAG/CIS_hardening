@@ -5,4 +5,15 @@ system_is_container: false
 container_vars_file: is_container.yml
 
 1-filesystem: true
+
+
 rule_1_1_1_1: true
+rule_1_1_1_2: true
+rule_1_1_1_3: true
+rule_1_1_1_4: true
+rule_1_1_1_5: true
+rule_1_1_1_6: true
+rule_1_1_1_7: true
+rule_1_1_1_8: true
+
+

@@ -1,0 +1,18 @@
+##### Section requirements #####
+- name: "PRELIM | AUDIT | Section 1.1 | Create list of mount points"
+  tags: always
+  ansible.builtin.set_fact:
+    mount_names: "{{ ansible_mounts | map(attribute='mount') | list }}"
+
+- name: "PRELIM | AUDIT | Ensure /dev/shm is a separate partition | discover"
+  when:
+    - rule_1_1_2_2_1 or
+      rule_1_1_2_2_2 or
+      rule_1_1_2_2_3 or
+      rule_1_1_2_2_4
+  tags: always
+  ansible.builtin.command: findmnt -kn /dev/shm
+  changed_when: false
+  failed_when: prelim_dev_shm_present.rc not in [ 0, 1 ]
+  check_mode: false
+  register: prelim_dev_shm_present
