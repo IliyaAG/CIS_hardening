@@ -1,0 +1,6 @@
+## mounts
+# /tmp
+rhel10cis_rule_1_1_2: false
+rhel10cis_rule_1_1_3: false
+rhel10cis_rule_1_1_4: false
+rhel10cis_rule_1_1_5: false

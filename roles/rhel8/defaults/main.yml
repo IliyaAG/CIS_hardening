@@ -1,6 +1,7 @@
 ---
 # defaults file for rhel8
 
+os_check: true
 system_is_container: false
 container_vars_file: is_container.yml
 
@@ -16,4 +17,4 @@ rule_1_1_1_6: true
 rule_1_1_1_7: true
 rule_1_1_1_8: true
 
-
+crypto_policy: 'DEFAULT'
