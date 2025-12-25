@@ -1,3 +1,9 @@
 ---
 # vars file for rhel8
 system_is_container: false
+
+allowed_crypto_policies:
+  - 'DEFAULT'
+  - 'FUTURE'
+  - 'FIPS'
+

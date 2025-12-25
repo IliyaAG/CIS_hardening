@@ -6,7 +6,7 @@ system_is_container: false
 container_vars_file: is_container.yml
 
 1-filesystem: true
-
+bootloader_password: password # pragma: allowlist secret
 
 rule_1_1_1_1: true
 rule_1_1_1_2: true
