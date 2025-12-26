@@ -2,7 +2,7 @@
 # handlers file for rhel8
 #
 - name: "Adding options for /tmp"
-  when: not rhel10cis_tmp_svc
+  when: not tmp_svc
   vars:
     mount_point: '/tmp'
   ansible.posix.mount:

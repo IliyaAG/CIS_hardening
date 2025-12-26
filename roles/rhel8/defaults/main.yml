@@ -18,3 +18,8 @@ rule_1_1_1_7: true
 rule_1_1_1_8: true
 
 crypto_policy: 'DEFAULT'
+## Control 1.1.2
+# If set to `true`, rule will be implemented using the `tmp.mount` systemd-service,
+# otherwise fstab configuration will be used.
+# These /tmp settings will include nosuid,nodev,noexec to conform to CIS standards.
+tmp_svc: false
