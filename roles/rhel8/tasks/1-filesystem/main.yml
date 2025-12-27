@@ -1,7 +1,11 @@
 - name: "SECTION | 1.1.1.x | Disable unused filesystems"
   ansible.builtin.import_tasks:
-    file: cis_1.1.1.x.yml
+    file: 1.1.1.x.yml
 
 - name: "SECTION | 1.1.2.1.x | Configure /tmp"
   ansible.builtin.import_tasks:
-    file: cis_1.1.2.1.x.yml
+    file: 1.1.2.1.x.yml
+
+- name: "SECTION | 1.1.2.2.x | Configure /dev/shm"
+  ansible.builtin.import_tasks:
+    file: 1.1.2.2.x.yml

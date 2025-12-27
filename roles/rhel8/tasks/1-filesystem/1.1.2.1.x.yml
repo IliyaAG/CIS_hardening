@@ -124,9 +124,14 @@
     - rule_1.1.2.1.2
     - rule_1.1.2.1.3
     - rule_1.1.2.1.4
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_MP-2
+  vars:
+     mount_point: "/tmp"
   ansible.builtin.template:
     src: etc/systemd/system/tmp.mount.j2
     dest: /etc/systemd/system/tmp.mount
     owner: root
     group: root
     mode: 'go-wx'
+  notify: *mount_option_notify
