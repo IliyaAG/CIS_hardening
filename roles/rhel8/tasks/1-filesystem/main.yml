@@ -9,3 +9,7 @@
 - name: "SECTION | 1.1.2.2.x | Configure /dev/shm"
   ansible.builtin.import_tasks:
     file: 1.1.2.2.x.yml
+
+- name: "SECTION | 1.1.2.3.x | Configure /home"
+  ansible.builtin.import_tasks:
+    file: cis_1.1.2.3.x.yml

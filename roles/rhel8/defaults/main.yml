@@ -38,7 +38,10 @@ rule_1_1_2_2_1: true
 rule_1_1_2_2_2: true
 rule_1_1_2_2_3: true
 rule_1_1_2_2_4: true
-
+# /home
+rhel10cis_rule_1_1_2_3_1: true
+rhel10cis_rule_1_1_2_3_2: true
+rhel10cis_rule_1_1_2_3_3: true
 
 crypto_policy: 'DEFAULT'
 ## Control 1.1.2
