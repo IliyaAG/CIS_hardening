@@ -1,0 +1,64 @@
+---
+# tasks file for rhel8
+
+- name: "Check OS version and family"
+  when: os_check
+  tags: always
+  ansible.builtin.assert:
+    that: (ansible_facts.distribution != 'CentOS' and ansible_facts.os_family == 'RedHat' or ansible_facts.os_family == "Rocky") and ansible_facts.distribution_major_version
+      is version_compare('10', '==')
+    fail_msg: "This role can only be run against Supported OSs. {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }} is not supported."
+    success_msg: "This role is running against a supported OS {{ ansible_facts.distribution }} {{ ansible_facts.distribution_major_version }}"
+
+- name: "Check ansible version"
+  tags: always
+  ansible.builtin.assert:
+    that: ansible_version.full is version_compare(min_ansible_version, '>=')
+    fail_msg: "You must use Ansible {{ min_ansible_version }} or greater"
+    success_msg: "This role is running a supported version of ansible {{ ansible_version.full }} >= {{ min_ansible_version }}"
+
+- name: "Setup rules if container"
+  when: ansible_connection == 'docker' or ansible_facts.virtualization_type in ["docker", "lxc", "openvz", "podman", "container"]
+  tags:
+    - container_discovery
+    - always
+  block:
+    - name: "Discover and set container variable if required"
+      ansible.builtin.set_fact:
+        system_is_container: true
+
+    - name: "Load variable for container"
+      ansible.builtin.include_vars:
+        file: "{{ container_vars_file }}"
+
+    - name: "Output if discovered is a container"
+      when: system_is_container
+      ansible.builtin.debug:
+        msg: system has been discovered as a container
+
+- name: "Check crypto-policy input"
+  ansible.builtin.assert:
+    that: cirypto_policy in allowed_crypto_policies
+    fail_msg: "Crypto policy is not a permitted version"
+    success_msg: "Crypto policy is a permitted version"
+
+- name: "Check bootloader_password variable has been changed"
+  when:
+    - set_boot_pass
+    - rule_1_4_1
+  tags: always
+  ansible.builtin.assert:
+    that: bootloader_password_hash.find('grub.pbkdf2.sha512') != -1 and bootloader_password_hash != 'grub.pbkdf2.sha512.changethispassword' # pragma: allowlist secret
+    msg: "This role will not be able to run single user password commands as bootloader_password_hash variable has not been set correctly"
+
+
+
+- name: Include prelim tasks
+  tags: always
+  ansible.builtin.import_tasks:
+    file: prelim.yml
+
+- name: Run Section 1 tasks
+  when: 1-initial_setup
+  ansible.builtin.import_tasks:
+    file: 1-initial_setup/main.yml
