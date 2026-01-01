@@ -63,7 +63,8 @@ rhel10cis_rule_1_2_1_1: true
 rhel10cis_rule_1_2_1_2: true
 rhel10cis_rule_1_2_1_3: true
 rhel10cis_rule_1_2_1_4: true
-
+# Package updates
+rhel10cis_rule_1_2_2_1: true
 ## Section 1 vars
 
 ## Ability to enable debug on mounts to assist in troubleshooting
