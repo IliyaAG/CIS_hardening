@@ -65,6 +65,16 @@ rhel10cis_rule_1_2_1_3: true
 rhel10cis_rule_1_2_1_4: true
 # Package updates
 rhel10cis_rule_1_2_2_1: true
+# Selinux
+rule_1_3_1_1: true
+rule_1_3_1_2: true
+rule_1_3_1_3: true
+rule_1_3_1_4: true
+rule_1_3_1_5: true
+rule_1_3_1_6: true
+rule_1_3_1_7: true
+rule_1_3_1_8: true
+
 ## Section 1 vars
 
 ## Ability to enable debug on mounts to assist in troubleshooting
@@ -93,5 +103,23 @@ rhel10cis_rhel_default_repo: true
 # enabling the GPG signatures-check for all the individual YUM repositories. If GPG signatures-check is enabled on repositories which do not
 # support it(like RedHat), installation of packages will fail.
 rule_enable_repogpg: true
+## Control 1.3.1.3|4|5 - SELinux policy settings
+# This selects type of policy; targeted or mls( multilevel )
+# mls should not be used, since it will disable unconfined policy module
+# and may prevent some services from running. Requires SELinux not being disabled (by
+# having 'rhel10cis_selinux_disable' var set as 'true'), otherwise setting will be ignored.
+selinux_pol: targeted
+## Control 1.3.1.3|4|5 - SELinux policy settings
+# This variable contains a specific SELinux mode, respectively:
+#  - 'enforcing':  SELinux policy IS enforced, therefore denies operations based on SELinux policy
+# rules. If system was installed with SELinux, this is enabled by default.
+#  - 'permissive': SELinux policy IS NOT enforced, therefore does NOT deny any operation, only
+# logs AVC(Access Vector Cache) messages. RedHat docs suggest it "can be used
+# briefly to check if SELinux is the culprit in preventing your application
+# from working".
+# CIS expects enforcing since permissive allows operations that might compromise the system.
+# Even though logging still occurs.
+selinux_enforce: enforcing
+
 
 crypto_policy: 'DEFAULT'
