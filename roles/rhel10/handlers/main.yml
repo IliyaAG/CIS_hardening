@@ -29,3 +29,135 @@
     state: restarted
     daemon_reload: true
   listen: "Remount /tmp"
+
+- name: "Adding options for /dev/shm"
+  vars:
+    mount_point: '/dev/shm'
+  ansible.posix.mount:
+    path: "{{ mount_point }}"
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: "Remount /dev/shm"
+
+- name: "Remounting /dev/shm"
+  vars:
+    mount_point: '/dev/shm'
+  ansible.posix.mount:
+    path: "{{ mount_point }}"
+    state: remounted
+  listen: "Remount /dev/shm"
+
+- name: "Adding options for /home"
+  vars:
+    mount_point: '/home'
+  ansible.posix.mount:
+    path: "{{ mount_point }}"
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: "Remount /home"
+
+- name: "Remounting /home"
+  vars:
+    mount_point: '/home'
+  ansible.posix.mount:
+    path: "{{ mount_point }}"
+    state: remounted
+  listen: "Remount /home"
+
+- name: "Adding options for /var"
+  vars:
+    mount_point: '/var'
+  ansible.posix.mount:
+    path: "{{ mount_point }}"
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: "Remount /var"
+
+- name: "Remounting /var"
+  vars:
+    mount_point: '/var'
+  ansible.posix.mount:
+    path: "{{ mount_point }}"
+    state: remounted
+  listen: "Remount /var"
+
+- name: "Adding options for /var/tmp"
+  vars:
+    mount_point: '/var/tmp'
+  ansible.posix.mount:
+    path: "{{ mount_point }}"
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: "Remount /var/tmp"
+
+- name: "Remounting /var/tmp"
+  vars:
+    mount_point: '/var/tmp'
+  ansible.posix.mount:
+    path: "{{ mount_point }}"
+    state: remounted
+  listen: "Remount /var/tmp"
+
+- name: "Adding options for /var/log"
+  vars:
+    mount_point: '/var/log'
+  ansible.posix.mount:
+    path: "{{ mount_point }}"
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: "Remount /var/log"
+
+- name: "Remounting /var/log"
+  vars:
+    mount_point: '/var/log'
+  ansible.posix.mount:
+    path: "{{ mount_point }}"
+    state: remounted
+  listen: "Remount /var/log"
+
+- name: "Adding options for /var/log/audit"
+  vars:
+    mount_point: '/var/log/audit'
+  ansible.posix.mount:
+    path: "{{ mount_point }}"
+    src: "{{ prelim_mount_point_fs_and_options[mount_point]['src'] }}"
+    state: present
+    fstype: "{{ prelim_mount_point_fs_and_options[mount_point]['fs_type'] }}"
+    opts: "{{ prelim_mount_point_fs_and_options[mount_point]['options'] | unique | join(',') }}"
+  listen: "Remount /var/log/audit"
+
+- name: "Remounting /var/log/audit"
+  vars:
+    mount_point: '/var/log/audit'
+  ansible.posix.mount:
+    path: "{{ mount_point }}"
+    state: remounted
+  listen: "Remount /var/log/audit"
+
+- name: "Remounting /boot/efi"
+  vars:
+    mount_point: '/boot/efi'
+  ansible.posix.mount:
+    path: "{{ mount_point }}"
+    state: remounted
+  notify: Set reboot required
+  listen: "Remount /boot/efi"
+
+- name: Reload sysctl
+  ansible.builtin.command: sysctl --system
+  changed_when: true
+
+
+- name: Systemd daemon reload
+  ansible.builtin.systemd:
+    daemon-reload: true

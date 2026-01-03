@@ -59,12 +59,12 @@ rule_1_1_2_7_3: true
 rule_1_1_2_7_4: true
 # Package Mgmt
 # Config Pkg Repos
-rhel10cis_rule_1_2_1_1: true
-rhel10cis_rule_1_2_1_2: true
-rhel10cis_rule_1_2_1_3: true
-rhel10cis_rule_1_2_1_4: true
+rule_1_2_1_1: true
+rule_1_2_1_2: true
+rule_1_2_1_3: true
+rule_1_2_1_4: true
 # Package updates
-rhel10cis_rule_1_2_2_1: true
+rule_1_2_2_1: true
 # Selinux
 rule_1_3_1_1: true
 rule_1_3_1_2: true
@@ -74,6 +74,14 @@ rule_1_3_1_5: true
 rule_1_3_1_6: true
 rule_1_3_1_7: true
 rule_1_3_1_8: true
+# Bootloader
+rule_1_4_1: true
+rule_1_4_2: true
+# Additional Process Hardening
+rule_1_5_1: true
+rule_1_5_2: true
+rule_1_5_3: true
+rule_1_5_4: true
 
 ## Section 1 vars
 

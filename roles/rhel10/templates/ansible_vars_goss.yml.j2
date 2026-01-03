@@ -1,0 +1,116 @@
+---
+
+# Enable logrunning potential resource intensive tests
+run_heavy_tests: {{ audit_run_heavy_tests }}
+
+# Extend default command timeout for longer running tests
+timeout_ms: {{ audit_cmd_timeout }}
+
+## Switching on/off specific baseline sections
+# These variables govern whether the tasks of a particular section are to be executed when running the role.
+# E.g: If you want to execute the tasks of Section 1 you should set the "1-initial_setup" variable to true.
+# If you do not want the tasks from that section to get executed you simply set the variable to "false".
+1-initial_setup: {{ 1-initial_setup }}
+section2: {{ section2 }}
+section3: {{ section3 }}
+section4: {{ section4 }}
+section5: {{ section5 }}
+section6: {{ section6 }}
+section7: {{ section7 }}
+
+# This is used for audit purposes to run only specific level use the tags
+# e.g.
+# - level1-server
+# - level2-workstation
+level_1: {{ level_1 }}
+level_2: {{ level_2 }}
+
+## Section 1.6 - Mandatory Access Control
+# This variable governs whether SELinux is disabled or not. If SELinux is NOT DISABLED by setting
+# 'selinux_disable' to 'true', the 1.6 subsection will be executed.
+selinux_disable: {{ selinux_disable }}
+# This variable is used in a preliminary task, handling grub2 paths either in case of
+# UEFI boot('/etc/grub2-efi.cfg') or in case of BIOS legacy-boot('/etc/grub2.cfg').
+legacy_boot: {{ legacy_boot }}
+
+## Benchmark name used by audting control role
+# The audit variable found at the base
+## metadata for Audit benchmark
+benchmark_version: 'v0.1.0'
+
+benchmark: RHEL10-CIS
+
+# These variables correspond with the CIS rule IDs or paragraph numbers defined in
+# the CIS benchmark documents.
+# PLEASE NOTE: These work in coordination with the section # group variables and tags.
+# You must enable an entire section in order for the variables below to take effect.
+
+# Section 1 is Initial setup (FileSystem Configuration, Configure Software Updates, Filesystem Integrity Checking, Secure Boot Settings,
+# Additional Process Hardening, Mandatory Access Control, Command Line Warning Banners, and GNOME Display Manager)
+# Filesystem kernel modules
+rule_1_1_1_1: {{ rule_1_1_1_1 }}
+rule_1_1_1_2: {{ rule_1_1_1_2 }}
+rule_1_1_1_3: {{ rule_1_1_1_3 }}
+rule_1_1_1_4: {{ rule_1_1_1_4 }}
+rule_1_1_1_5: {{ rule_1_1_1_5 }}
+rule_1_1_1_6: {{ rule_1_1_1_6 }}
+rule_1_1_1_7: {{ rule_1_1_1_7 }}
+rule_1_1_1_8: {{ rule_1_1_1_8 }}
+rule_1_1_1_9: {{ rule_1_1_1_9 }}
+# Filesystems
+# /tmp
+rule_1_1_2_1_1: {{ rule_1_1_2_1_1 }}
+rule_1_1_2_1_2: {{ rule_1_1_2_1_2 }}
+rule_1_1_2_1_3: {{ rule_1_1_2_1_3 }}
+rule_1_1_2_1_4: {{ rule_1_1_2_1_4 }}
+# /dev/shm
+rule_1_1_2_2_1: {{ rule_1_1_2_2_1 }}
+rule_1_1_2_2_2: {{ rule_1_1_2_2_2 }}
+rule_1_1_2_2_3: {{ rule_1_1_2_2_3 }}
+rule_1_1_2_2_4: {{ rule_1_1_2_2_4 }}
+# /home
+rule_1_1_2_3_1: {{ rule_1_1_2_3_1 }}
+rule_1_1_2_3_2: {{ rule_1_1_2_3_2 }}
+rule_1_1_2_3_3: {{ rule_1_1_2_3_3 }}
+# /var
+rule_1_1_2_4_1: {{ rule_1_1_2_4_1 }}
+rule_1_1_2_4_2: {{ rule_1_1_2_4_2 }}
+rule_1_1_2_4_3: {{ rule_1_1_2_4_3 }}
+# /var/tmp
+rule_1_1_2_5_1: {{ rule_1_1_2_5_1 }}
+rule_1_1_2_5_2: {{ rule_1_1_2_5_2 }}
+rule_1_1_2_5_3: {{ rule_1_1_2_5_3 }}
+rule_1_1_2_5_4: {{ rule_1_1_2_5_4 }}
+# /var/log
+rule_1_1_2_6_1: {{ rule_1_1_2_6_1 }}
+rule_1_1_2_6_2: {{ rule_1_1_2_6_2 }}
+rule_1_1_2_6_3: {{ rule_1_1_2_6_3 }}
+rule_1_1_2_6_4: {{ rule_1_1_2_6_4 }}
+# /var/log/audit
+rule_1_1_2_7_1: {{ rule_1_1_2_7_1 }}
+rule_1_1_2_7_2: {{ rule_1_1_2_7_2 }}
+rule_1_1_2_7_3: {{ rule_1_1_2_7_3 }}
+rule_1_1_2_7_4: {{ rule_1_1_2_7_4 }}
+
+# Package Mgmt
+# Config Pkg Repos
+rule_1_2_1_1: {{ rule_1_2_1_1 }}
+rule_1_2_1_2: {{ rule_1_2_1_2 }}
+rule_1_2_1_3: {{ rule_1_2_1_3 }}
+rule_1_2_1_4: {{ rule_1_2_1_4 }}
+# Package updates
+rule_1_2_2_1: {{ rule_1_2_2_1 }}
+
+# Selinux
+rule_1_3_1_1: {{ rule_1_3_1_1 }}
+rule_1_3_1_2: {{ rule_1_3_1_2 }}
+rule_1_3_1_3: {{ rule_1_3_1_3 }}
+rule_1_3_1_4: {{ rule_1_3_1_4 }}
+rule_1_3_1_5: {{ rule_1_3_1_5 }}
+rule_1_3_1_6: {{ rule_1_3_1_6 }}
+rule_1_3_1_7: {{ rule_1_3_1_7 }}
+rule_1_3_1_8: {{ rule_1_3_1_8 }}
+
+# Bootloader
+rule_1_4_1: {{ rule_1_4_1 }}
+rule_1_4_2: {{ rule_1_4_2 }}
