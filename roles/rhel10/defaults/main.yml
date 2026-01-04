@@ -82,7 +82,14 @@ rule_1_5_1: true
 rule_1_5_2: true
 rule_1_5_3: true
 rule_1_5_4: true
-
+# Config system wide Crypto
+rule_1_6_1: true
+rule_1_6_2: true
+rule_1_6_3: true
+rule_1_6_4: true
+rule_1_6_5: true
+rule_1_6_6: true
+rule_1_6_7: true
 ## Section 1 vars
 
 ## Ability to enable debug on mounts to assist in troubleshooting
@@ -128,6 +135,35 @@ selinux_pol: targeted
 # CIS expects enforcing since permissive allows operations that might compromise the system.
 # Even though logging still occurs.
 selinux_enforce: enforcing
+## Control 1.4.1
+# This variable governs whether a bootloader password should be set in '/boot/grub2/user.cfg' file.
+set_boot_pass: true
 
+# This variable will store the GRUB bootloader password to be stored in '/boot/grub2/user.cfg' file. The default value must be changed.
+bootloader_password: password  # pragma: allowlist secret
 
+# Set this value to anything secure to have predictable hashes, which will prevent unnecessary changes
+bootloader_salt: ''
+
+## Controls 1.6.x
+# This variable contains the value to be set as the system-wide crypto policy. Current rule enforces NOT USING
+# 'LEGACY' value(as it is less secure, it just ensures compatibility with legacy systems), therefore
+# possible values for this variable are, as explained by RedHat docs:
+#  -'DEFAULT': reasonable default policy for today's standards (balances usability and security)
+#  -'FUTURE': conservative security level that is believed to withstand any near-term future attacks
+#  -'FIPS': A level that conforms to the FIPS140-2 requirements
 crypto_policy: 'DEFAULT'
+## Controls 1.6.x and Controls 5.1.x
+# This variable contains the value of the crypto policy module(combinations of policies and
+# sub-policies) to be allowed as default setting. Allowed options are defined in 'vars/main.yml' file,
+# using 'rhel10cis_allowed_crypto_policies_modules' variable, which currently are:
+#    - 'OSPP'
+#    - 'AD-SUPPORT'
+#    - 'AD-SUPPORT-LEGACY'
+crypto_policy_module: ''
+## Controls 1.6.x
+# This variable contains the value of the crypto policy module(combinations of policies and
+# sub-policies) to be allowed as default setting. Allowed options are defined in 'vars/main.yml' file,
+# using those listed in the 'rhel10cis_allowed_crypto_policies_modules' variable.
+additional_crypto_policy_module: ''
+

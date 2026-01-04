@@ -157,7 +157,29 @@
   ansible.builtin.command: sysctl --system
   changed_when: true
 
+- name: Update Crypto Policy
+  ansible.builtin.set_fact:
+    full_crypto_policy: "{{ crypto_policy }}{{ crypto_policy_module }}{% if additional_crypto_policy_module | length > 0 %}:{{ additional_crypto_policy_module }}{% endif %}"
+  notify: Set Crypto Policy
+
+- name: Set Crypto Policy
+  when: prelim_system_wide_crypto_policy.stdout != full_crypto_policy
+  ansible.builtin.command: |
+    update-crypto-policies --set "{{ full_crypto_policy }}"
+  changed_when: true
+  notify:
+    - Set reboot required
+    - Restart sshd
+
+- name: Restart sshd
+  ansible.builtin.systemd:
+    name: sshd
+    state: restarted
 
 - name: Systemd daemon reload
   ansible.builtin.systemd:
     daemon-reload: true
+
+- name: Set reboot required
+  ansible.builtin.set_fact:
+    change_requires_reboot: true
