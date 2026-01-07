@@ -98,6 +98,17 @@ rule_1_7_3: true
 rule_1_7_4: true
 rule_1_7_5: true
 rule_1_7_6: true
+# Gnome Display Manager
+rhel10cis_rule_1_8_1: "{{ not desktop_required }}"
+rhel10cis_rule_1_8_2: true
+rhel10cis_rule_1_8_3: true
+rhel10cis_rule_1_8_4: true
+rhel10cis_rule_1_8_5: true
+rhel10cis_rule_1_8_6: true
+rhel10cis_rule_1_8_7: true
+rhel10cis_rule_1_8_8: true
+rhel10cis_rule_1_8_9: true
+rhel10cis_rule_1_8_10: true
 ## Ability to enable debug on mounts to assist in troubleshooting
 # Mount point changes are set based upon facts created in Prelim
 # these then build the variable and options that is passed to the handler to set the mount point for the controls in section1.
@@ -177,5 +188,28 @@ additional_crypto_policy_module: ''
 # - 1.7.2 - Ensure local login warning banner is configured properly
 # - 1.7.3 - Ensure remote login warning banner is configured properly
 # This variable  stores the content for the Warning Banner(relevant for issue, issue.net, motd).
-rhel10cis_warning_banner: Authorized users only. All activity may be monitored and reported.
+warning_banner: Authorized users only. All activity may be monitored and reported.
 # End Banner
+## Control 1.8.x - Settings for GDM
+# do not run Control 1.8.x if using a display manager different than gdm
+display_manager: "gdm"
+# If the system is running a desktop this will turn off removal of the GUI pkgs
+# and configure the required settings
+desktop_required: false
+# This variable governs whether rules dealing with GUI specific packages(and/or their settings) should
+# be executed either to:
+# - secure GDM, if GUI is needed('rhel10cis_gui: true')
+# - or remove GDM and X-Windows-system, if no GUI is needed('rhel10cis_gui: false')
+# The value of this variable is set automatically, if gnome is present this variable
+# will always have `true` as a value, and `false` otherwise.
+gui: "{{ prelim_gnome_present.stat.exists | default(false) }}"
+# This variable specifies the GNOME configuration database file to which configurations are written.
+# (See "https://help.gnome.org/admin/system-admin-guide/stable/dconf-keyfiles.html.en")
+# The default database is 'local'.
+dconf_db_name: local
+# This variable governs the number of seconds of inactivity before the screen goes blank.
+# Set max value for idle-delay in seconds (between 1 and 900)
+screensaver_idle_delay: 900
+# This variable governs the number of seconds the screen remains blank before it is locked.
+# Set max value for lock-delay in seconds (between 0 and 5)
+screensaver_lock_delay: 5
