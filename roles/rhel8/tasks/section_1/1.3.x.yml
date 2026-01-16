@@ -1,0 +1,71 @@
+---
+
+- name: "1.3.1 | PATCH | Ensure bootloader password is set"
+  when:
+    - set_boot_pass
+    - rule_1_3_1
+  tags:
+    - level1-server
+    - level1-workstation
+    - automated
+    - grub
+    - patch
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_MP-2
+    - rule_1.3.1
+  ansible.builtin.copy:
+    dest: "{{ boot_path }}user.cfg"  # noqa template-instead-of-copy
+    content: "GRUB2_PASSWORD={{ bootloader_password_hash }}"
+    owner: root
+    group: root
+    mode: 'go-rwx'
+  notify: Rebuild_grub
+
+- name: "1.3.2 | PATCH | Ensure permissions on bootloader config are configured"
+  when:
+    - rule_1_3_2
+    - prelim_grub_cfg.stat.exists
+    - prelim_grub_cfg.stat.islnk
+  tags:
+    - level1-server
+    - level1-workstation
+    - automated
+    - grub
+    - patch
+    - NIST800-53R5_AC-3
+    - NIST800-53R5_MP-2
+    - rule_1.3.2
+  block:
+    - name: "1.3.2 | PATCH | Ensure permissions on bootloader config are configured | BIOS"
+      when: legacy_boot
+      ansible.builtin.file:
+        path: "{{ boot_path }}"
+        owner: root
+        group: root
+        mode: 'go-rwx'
+        recurse: true
+
+    - name: "1.3.2 | PATCH | Ensure permissions on bootloader config are configured | EFI"
+      when: not legacy_boot
+      ansible.builtin.file:
+        path: "{{ boot_path }}"
+        owner: root
+        group: root
+        mode: 'go-rwx'
+        recurse: true
+
+    - name: "1.3.2 | PATCH | Ensure permissions on bootloader config are configured | UEFI"
+      when:
+        - not legacy_boot
+        - item.mount == "/boot/efi"
+      notify: Set_reboot_required
+      ansible.posix.mount:
+        name: /boot/efi
+        src: "UUID={{ item.uuid }}"
+        fstype: vfat
+        state: present
+        opts: defaults,umask=0027,fmask=0077,uid=0,gid=0
+        passno: '0'
+      loop: "{{ ansible_facts.mounts }}"
+      loop_control:
+        label: "{{ item.mount }}"
