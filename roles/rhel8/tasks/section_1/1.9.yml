@@ -1,0 +1,18 @@
+---
+
+- name: "1.1.9 | PATCH | Disable Automounting"
+  when:
+    - not allow_autofs
+    - "'autofs' in ansible_facts.packages"
+    - rule_1_1_9
+  tags:
+    - level1-server
+    - level2-workstation
+    - automated
+    - patch
+    - mounts
+    - automounting
+    - rule_1.1.9
+  ansible.builtin.service:
+    name: autofs
+    enabled: false
