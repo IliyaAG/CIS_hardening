@@ -1,2 +1,222 @@
 ---
-# defaults file for rhel8
+
+# defaults file for rhel8-cis
+
+system_is_container: false
+# Place to find the container yml file for your environment - /vars/... This can be adjusted for your requirements.
+container_vars_file: is_container.yml
+
+os_check: true
+# rhel8cis is left off the front of this var for consistency in testing pipeline
+# system_is_ec2 toggle will disable tasks that fail on Amazon EC2 instances. Set true to skip and false to run tasks
+system_is_ec2: false
+
+section1: true
+
+
+
+level_1: true
+level_2: true
+selinux_disable: false
+
+# Some tests can have a heavy impact on system e.g. find on all filesystems etc
+disruption_high: false
+
+## Python Binary
+## This is used for python3 Installations where python2 OS modules are used in ansible
+python2_bin: /bin/python2.7
+
+# Create managed not custom local_facts files
+create_benchmark_facts: true
+ansible_facts_path: /etc/ansible/facts.d
+
+## Benchmark name used by auditing control role
+# The audit variable found at the base
+benchmark: RHEL8-CIS
+benchmark_version: v3.0.0
+
+# Whether to skip the reboot
+skip_reboot: true
+
+# default value will change to true but wont reboot if not enabled but will error
+change_requires_reboot: false
+
+# Modify behavior of changed_when if reboot is pending and skipped to allow idempotency to succeed
+reboot_warning_changed_when: true
+
+###
+### Settings for associated Audit role using Goss
+###
+
+###########################################
+### Goss is required on the remote host ###
+### vars/auditd.yml for other settings  ###
+
+# Allow audit to setup the requirements including installing git (if option chosen and downloading and adding goss binary to system)
+setup_audit: false
+
+# enable audits to run - this runs the audit and get the latest content
+run_audit: false
+# Run heavy tests - some tests can have more impact on a system enabling these can have greater impact on a system
+audit_run_heavy_tests: true
+# Ability to limit the number of concurrent processes used by goss (default 50)
+audit_max_concurrent: 50
+
+## Only run Audit do not remediate
+audit_only: false
+
+### As part of audit_only ###
+# Path to copy the files to will create dir structure in audit_only mode
+audit_capture_files_dir: /some/location to copy to on control node
+#############################
+
+# How to retrieve audit binary
+# Options are copy or download - detailed settings at the bottom of this file
+# you will need to access to either github or the file already downloaded
+get_audit_binary_method: download
+
+## if get_audit_binary_method - copy the following needs to be updated for your environment
+## it is expected that it will be copied from somewhere accessible to the control node
+## e.g copy from ansible control node to remote host
+audit_bin_copy_location: /some/accessible/path
+
+# how to get audit files onto host options
+# options are git/copy/archive/get_url other e.g. if you wish to run from already downloaded conf
+audit_content: git
+
+# If using either archive, copy, get_url:
+## Note will work with .tar files - zip will require extra configuration
+### If using get_url this is expecting github url in tar.gz format e.g.
+### https://github.com/ansible-lockdown/RHEL8-CIS-Audit/archive/refs/heads/benchmark-v1.0.0.tar.gz
+audit_conf_source: "some path or url to copy from"
+
+# Destination for the audit content to be placed on managed node
+# note may not need full path e.g. /opt with the directory being the {{ benchmark }}-Audit directory
+audit_conf_dest: "/opt"
+
+# Where the audit logs are stored
+audit_log_dir: '/opt'
+
+## Ability to collect and take audit files moving to a centralized location
+# This enables the collection of the files from the host
+fetch_audit_output: false
+
+# Method of getting,uploading the summary files
+## Ensure access and permissions are available for these to occur.
+## options are
+# fetch - fetches from server and moves to location on the ansible controller (could be a mount point available to controller)
+# copy - copies file to a location available to the managed node
+audit_output_collection_method: fetch
+
+# Location to put the audit files
+audit_output_destination: /opt/audit_summaries/
+
+### Goss Settings ##
+####### END ########
+
+# These variables correspond with the CIS rule IDs or paragraph numbers defined in
+# the CIS benchmark documents.
+# PLEASE NOTE: These work in coordination with the section # group variables and tags.
+# You must enable an entire section in order for the variables below to take effect.
+# Section 1 rules
+rule_1_1_1_1: true
+rule_1_1_1_2: true
+rule_1_1_1_3: true
+rule_1_1_1_4: true
+rule_1_1_1_5: true
+rule_1_1_1_6: true
+rule_1_1_1_7: true
+rule_1_1_1_8: true
+
+# /tmp
+rule_1_1_2_1_1: true
+rule_1_1_2_1_2: true
+rule_1_1_2_1_3: true
+rule_1_1_2_1_4: true
+
+# /dev/shm
+rule_1_1_2_2_1: true
+rule_1_1_2_2_2: true
+rule_1_1_2_2_3: true
+rule_1_1_2_2_4: true
+
+# /home
+rule_1_1_2_3_1: true
+rule_1_1_2_3_2: true
+rule_1_1_2_3_3: true
+
+# /var
+rule_1_1_2_4_1: true
+rule_1_1_2_4_2: true
+rule_1_1_2_4_3: true
+
+# /var/tmp
+rule_1_1_2_5_1: true
+rule_1_1_2_5_2: true
+rule_1_1_2_5_3: true
+rule_1_1_2_5_4: true
+
+# /var/log
+rule_1_1_2_6_1: true
+rule_1_1_2_6_2: true
+rule_1_1_2_6_3: true
+rule_1_1_2_6_4: true
+
+# /var/log/audit
+rule_1_1_2_7_1: true
+rule_1_1_2_7_2: true
+rule_1_1_2_7_3: true
+rule_1_1_2_7_4: true
+
+# DNF - Patching
+rule_1_2_1: true
+rule_1_2_2: true
+rule_1_2_3: true
+rule_1_2_4: true
+rule_1_2_5: true
+
+# bootloader grub
+rule_1_3_1: true
+rule_1_3_2: true
+
+# kernel sysctl and coredumps
+rule_1_4_1: true
+rule_1_4_2: true
+rule_1_4_3: true
+rule_1_4_4: true
+
+# SElinux
+rule_1_5_1_1: true
+rule_1_5_1_2: true
+rule_1_5_1_3: true
+rule_1_5_1_4: true
+rule_1_5_1_5: true
+rule_1_5_1_6: true
+rule_1_5_1_7: true
+rule_1_5_1_8: true
+
+# Crypto Policies
+rule_1_6_1: true
+rule_1_6_2: true
+rule_1_6_3: true
+rule_1_6_4: true
+
+# MOTD and messages
+rule_1_7_1: true
+rule_1_7_2: true
+rule_1_7_3: true
+rule_1_7_4: true
+rule_1_7_5: true
+rule_1_7_6: true
+
+# Gnome desktop
+rule_1_8_1: true
+rule_1_8_2: true
+rule_1_8_3: true
+rule_1_8_4: true
+rule_1_8_5: true
+rule_1_8_6: true
+rule_1_8_7: true
+rule_1_8_8: true
+rule_1_8_9: true
+rule_1_8_10: true
