@@ -1,2 +1,42 @@
 ---
-# vars file for rhel8
+# vars file for RHEL8-CIS
+
+min_ansible_version: 2.11.1
+allowed_crypto_policies:
+  - 'DEFAULT'
+  - 'FUTURE'
+  - 'FIPS'
+
+# Following is left blank for ability to build string
+crypto_policy_module: ''
+
+# Do not adjust these are recognized as part of the CIS benchmark and used during testing
+allowed_crypto_policies_modules:
+  # Recognized by CIS as possible extra options
+  - 'OSPP'
+  - 'AD-SUPPORT'
+  - 'AD-SUPPORT-LEGACY'
+  # The following are already included in 1.6.x controls
+  - 'NO-SHA1'
+  - 'NO-SSHCBC'
+  - 'NO-SSHETM'
+  - 'NO-SSHWEAKCIPHER'
+  - 'NO-SSHWEAKMAC'
+  - 'NO-WEAKMAC'
+
+auditd_binaries:
+  - /sbin/auditctl
+  - /sbin/aureport
+  - /sbin/ausearch
+  - /sbin/autrace
+  - /sbin/auditd
+  - /sbin/augenrules
+# default setting, this should not be changed
+# and is overridden if a task that changed sets the value if required.
+change_requires_reboot: false
+
+legacy_boot: false
+
+# Used to control warning summary
+warn_control_list: ""
+warn_count: 0

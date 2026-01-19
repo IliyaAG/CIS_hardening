@@ -220,3 +220,166 @@ rule_1_8_7: true
 rule_1_8_8: true
 rule_1_8_9: true
 rule_1_8_10: true
+
+# Section 2 rules
+# time sync
+rule_2_1_1: true
+rule_2_1_2: true
+rule_2_1_3: true
+
+# Server services
+rule_2_2_1: true
+rule_2_2_2: true
+rule_2_2_3: true
+rule_2_2_4: true
+rule_2_2_5: true
+rule_2_2_6: true
+rule_2_2_7: true
+rule_2_2_8: true
+rule_2_2_9: true
+rule_2_2_10: true
+rule_2_2_11: true
+rule_2_2_12: true
+rule_2_2_13: true
+rule_2_2_14: true
+rule_2_2_15: true
+rule_2_2_16: true
+rule_2_2_17: true
+rule_2_2_18: true
+rule_2_2_19: true
+rule_2_2_20: true
+rule_2_2_21: true
+rule_2_2_22: true
+
+# Client services
+rule_2_3_1: true
+rule_2_3_2: true
+rule_2_3_3: true
+rule_2_3_4: true
+rule_2_3_5: true
+
+##
+## Section 1 vars
+##
+# 1.1.2.2
+# 1.1.2.3
+# 1.1.2.4
+# These settings go into the /etc/fstab file for the /tmp mount settings
+# The value must contain nosuid,nodev,noexec to conform to CIS standards
+# tmp_tmpfs_settings: "defaults,rw,nosuid,nodev,noexec,relatime 0 0"
+# If set true uses the tmp.mount service else using fstab configuration
+tmp_svc: false
+
+# 1.2 patch system
+apply_installed_kernel_limit: false
+installed_kernel_limit: 2
+
+# 1.3 Bootloader password
+bootloader_password_hash: 'grub.pbkdf2.sha512.changethispassword'  # pragma: allowlist secret
+bootloader_password: random  # pragma: allowlist secret
+set_boot_pass: false
+
+# 1.5 SELinux policy
+selinux_state: enforcing
+# Configure SELinux to meet or exceed the default targeted policy, which constrains daemons and system software only.
+# Valid Inputs: targeted or mls
+selinux_policy: targeted
+
+## Control 1.6
+# This variable contains the value to be set as the system-wide crypto policy. Current rule enforces NOT USING
+# 'LEGACY' value(as it is less secure, it just ensures compatibility with legacy systems), therefore
+# possible values for this variable are, as explained by RedHat docs:
+#  -'DEFAULT': reasonable default policy for today's standards (balances usability and security)
+#  -'FUTURE': conservative security level that is believed to withstand any near-term future attacks
+#  -'FIPS': A level that conforms to the FIPS140-2 requirements
+crypto_policy: 'DEFAULT'
+
+## Control 1.6
+# This variable contains the value of the crypto policy module(combinations of policies and
+# sub-policies) to be allowed as default setting. Allowed options are defined in 'vars/main.yml' file,
+# using those listed in the 'rhel9cis_allowed_crypto_policies_modules' variable.
+additional_crypto_policy_module: ''
+
+# 1.7
+# Warning Banner Content (issue, issue.net, motd)
+warning_banner: |
+    Authorized users only. All activity may be monitored and reported.
+# End Banner
+
+# 1.8 Gnome Desktop
+# Whether or not to run tasks related to auditing/patching the desktop environment
+gui: false
+dconf_db_name: local
+screensaver_idle_delay: 900  # Set max value for idle-delay in seconds (between 1 and 900)
+screensaver_lock_delay: 5  # Set max value for lock-delay in seconds (between 0 and 5)
+##
+## Section 2 vars
+##
+# 2.1.1 Time Synchronization - Either chrony or ntp
+time_synchronization: chrony
+
+# Time Synchronization servers - used in template file chrony.conf.j2
+time_synchronization_servers:
+  - 0.pool.ntp.org
+  - 1.pool.ntp.org
+  - 2.pool.ntp.org
+  - 3.pool.ntp.org
+
+chrony_server_options: "minpoll 8"
+ntp_server_options: "iburst"
+
+# Service configuration
+# Options are
+# true to leave installed if exists not changes take place
+# false - this removes the package
+# mask - if a dependency for product so cannot be removed
+# Server Services
+autofs_services: false
+autofs_mask: false
+avahi_server: false
+avahi_mask: false
+dhcp_server: false
+dhcp_mask: false
+dns_server: false
+dns_mask: false
+dnsmasq_server: false
+dnsmasq_mask: false
+samba_server: false
+samba_mask: false
+ftp_server: false
+ftp_mask: false
+message_server: false  # This is for messaging dovecot and cyrus-imap
+message_mask: false
+nfs_server: true
+nfs_mask: true
+nis_server: true  # set to mask if nis client required
+nis_mask: false
+print_server: false  # replaces cups
+print_mask: false
+rpc_server: true
+rpc_mask: true
+rsync_server: false
+rsync_mask: false
+net_snmp_server: false
+net_snmp_mask: false
+telnet_server: false
+telnet_mask: false
+tftp_server: false
+tftp_mask: false
+squid_server: false
+squid_mask: false
+httpd_server: false
+httpd_mask: false
+nginx_server: false
+nginx_mask: false
+xinetd_server: false
+xinetd_mask: false
+xwindow_server: false  # will remove mask not an option
+is_mail_server: false
+
+# Client Services
+ftp_client: false
+openldap_clients_required: false
+ypbind_required: false  # Same package as NIS server
+telnet_required: false
+tftp_client: false
