@@ -12,6 +12,8 @@ os_check: true
 system_is_ec2: false
 
 section1: true
+section2: true
+section3: true
 
 
 
@@ -258,6 +260,41 @@ rule_2_3_3: true
 rule_2_3_4: true
 rule_2_3_5: true
 
+# Section 3 rules
+# network connectivity wifi/bluetooth/ipv6
+rule_3_1_1: true
+rule_3_1_2: true
+rule_3_1_3: true
+
+# Network Kernel module
+rule_3_2_1: true
+rule_3_2_2: true
+rule_3_2_3: true
+rule_3_2_4: true
+
+# Network Kernel Params
+rule_3_3_1: true
+rule_3_3_2: true
+rule_3_3_3: true
+rule_3_3_4: true
+rule_3_3_5: true
+rule_3_3_6: true
+rule_3_3_7: true
+rule_3_3_8: true
+rule_3_3_9: true
+rule_3_3_10: true
+rule_3_3_11: true
+
+# Firewall
+rule_3_4_1_1: true
+rule_3_4_1_2: true
+
+# Firewall rules
+rule_3_4_2_1: true
+rule_3_4_2_2: true
+rule_3_4_2_3: true
+rule_3_4_2_4: true
+rule_3_4_2_5: true
 ##
 ## Section 1 vars
 ##
@@ -383,3 +420,49 @@ openldap_clients_required: false
 ypbind_required: false  # Same package as NIS server
 telnet_required: false
 tftp_client: false
+
+##
+## Section 3 vars
+##
+
+bluetooth_service: false
+bluetooth_mask: false
+
+# System network parameters (host only OR host and router)
+is_router: false
+
+# IPv6 required
+ipv6_required: true
+
+ipv6_sysctl_force: true
+
+##  Optional - Understand the impact of making the following two control to true
+# By default, we do not disable IPv6 on localhost, as it's important for multiple
+# components.  If you want to disable it anyway, change the following
+# value to true refer https://access.redhat.com/solutions/8709
+# this changes sysctl and /etc/hosts
+# requires reboot
+ipv6_disable_localhost: false
+# disable ipv6 for sshd
+ipv6_sshd_disable: false
+# disable chrony on ipv6
+ipv6_chrony_disable: false
+
+# Set to 'true' if X Windows is needed in your environment
+xwindows_required: false
+
+## Section3 vars
+
+# default location for the sysctl overrides.
+sysctl_file: /etc/sysctl.d/99_cis.conf
+
+# Firewall Service - either firewalld or nftables
+firewall: 'firewalld'
+
+default_zone: public
+
+nft_tables_autonewtable: true
+nft_tables_tablename: filter
+
+# 3.4.2.6 Set nftables new chain create
+nft_tables_autochaincreate: true
