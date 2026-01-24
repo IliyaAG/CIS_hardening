@@ -14,6 +14,7 @@ system_is_ec2: false
 section1: true
 section2: true
 section3: true
+section4: true
 
 
 
@@ -295,6 +296,110 @@ rule_3_4_2_2: true
 rule_3_4_2_3: true
 rule_3_4_2_4: true
 rule_3_4_2_5: true
+
+##
+## Section 4 rules
+##
+# cron
+rule_4_1_1_1: true
+rule_4_1_1_2: true
+rule_4_1_1_3: true
+rule_4_1_1_4: true
+rule_4_1_1_5: true
+rule_4_1_1_6: true
+rule_4_1_1_7: true
+rule_4_1_1_8: true
+
+# at
+rule_4_1_2_1: true
+
+# sshd
+rule_4_2_1: true
+rule_4_2_2: true
+rule_4_2_3: true
+rule_4_2_4: true
+rule_4_2_5: true
+rule_4_2_6: true
+rule_4_2_7: true
+rule_4_2_8: true
+rule_4_2_9: true
+rule_4_2_10: true
+rule_4_2_12: true
+rule_4_2_11: true
+rule_4_2_13: true
+rule_4_2_14: true
+rule_4_2_15: true
+rule_4_2_16: true
+rule_4_2_17: true
+rule_4_2_18: true
+rule_4_2_19: true
+rule_4_2_20: true
+rule_4_2_21: true
+rule_4_2_22: true
+
+# sudo
+rule_4_3_1: true
+rule_4_3_2: true
+rule_4_3_3: true
+rule_4_3_4: true
+rule_4_3_5: true
+rule_4_3_6: true
+rule_4_3_7: true
+
+# Pam software pkgs
+rule_4_4_1_1: true
+rule_4_4_1_2: true
+
+# authselect
+rule_4_4_2_1: true
+rule_4_4_2_2: true
+rule_4_4_2_3: true
+rule_4_4_2_4: true
+rule_4_4_2_5: true
+
+# pam faillock
+rule_4_4_3_1_1: true
+rule_4_4_3_1_2: true
+rule_4_4_3_1_3: true
+
+# pam pwquality
+rule_4_4_3_2_1: true
+rule_4_4_3_2_2: true
+rule_4_4_3_2_3: true
+rule_4_4_3_2_4: true
+rule_4_4_3_2_5: true
+rule_4_4_3_2_6: true
+rule_4_4_3_2_7: true
+
+# pam pwhistory
+rule_4_4_3_3_1: true
+rule_4_4_3_3_2: true
+rule_4_4_3_3_3: true
+
+# pam pam_unix
+rule_4_4_3_4_1: true
+rule_4_4_3_4_2: true
+rule_4_4_3_4_3: true
+rule_4_4_3_4_4: true
+
+# Shadow user settings
+rule_4_5_1_1: true
+rule_4_5_1_2: true
+rule_4_5_1_3: true
+rule_4_5_1_4: true
+rule_4_5_1_5: true
+
+# root and sys accts and env
+rule_4_5_2_1: true
+rule_4_5_2_2: true
+rule_4_5_2_3: true
+rule_4_5_2_4: true
+rule_4_5_2_5: true
+
+# User environment
+rule_4_5_3_1: true
+rule_4_5_3_2: true
+rule_4_5_3_3: true
 ##
 ## Section 1 vars
 ##
@@ -466,3 +571,123 @@ nft_tables_tablename: filter
 
 # 3.4.2.6 Set nftables new chain create
 nft_tables_autochaincreate: true
+
+#######
+## Section5 vars
+######
+
+# This value, containing the absolute filepath of the produced 'sshd' config file, allows usage of
+# drop-in files('/etc/ssh/ssh_config.d/{ssh_drop_in_name}.conf', supported by RHEL>=8.6) when CIS adopts them.
+# Otherwise, the default value is '/etc/ssh/ssh_config'.
+sshd_config_file: /etc/ssh/sshd_config
+
+## If using the allow/deny user groups options
+sshd_limited: false
+sshd_clientalivecountmax: 3
+sshd_clientaliveinterval: 15
+sshd_logingracetime: 60
+sshd_loglevel: INFO
+sshd_macs: '-hmac-md5,hmac-md5-96,hmac-ripemd160,hmac-sha1-96,umac-64@openssh.com,hmac-md5-etm@openssh.com,hmac-md5-96-etm@openssh.com,hmac-ripemd160-etm@openssh.com,hmac-sha1-96-etm@openssh.com,umac-64-etm@openssh.com'
+sshd_maxauthtries: 4
+sshd_maxsessions: 10
+sshd_maxstartups: "10:30:60"
+sshd_ciphers: '-3des-cbc,aes128-cbc,aes192-cbc,aes256-cbc,rijndael-cbc@lysator.liu.se'
+sshd_kex: '-diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1'
+# WARNING: make sure you understand the precedence when working with these values!!
+## Only runs if value sshd_limited is true
+# sshd_allowusers:
+# sshd_allowgroups: systems dba
+# sshd_denyusers:
+# sshd_denygroups:
+
+# 4.3. sudo
+sudolog_location: "/var/log/sudo.log"
+sudo_timestamp_timeout: 15
+
+## PAM
+## 4.4.2.x PAM and Authselect
+# Do not use authselect if:
+# Your host is part of Linux Identity Management.
+# Joining your host to an IdM domain with the ipa-client-install command automatically configures SSSD authentication on your host.
+# Your host is part of Active Directory via SSSD.
+# Calling the realm join command to join your host to an Active Directory domain automatically configures SSSD authentication on your host.
+allow_authselect_updates: true
+##
+authselect_pkg_update: false  # NOTE the risks if system is using SSSD or using ipa-client-install
+
+## PAM AND Authselect
+
+# To create a new profile (best for greenfield fresh sites not configured)
+# This allows creation of a custom profile using an existing one to build from
+# will only create if profile does not already exist
+## options true or false
+authselect_custom_profile_create: true
+## Controls:
+#  - 4.4.2.1 - Ensure custom authselect profile is used
+# Settings in place now will fail, they are placeholders from the control example. Due to the way many multiple
+# options and ways to configure this control needs to be enabled and settings adjusted to minimize risk.
+
+# This variable configures the name of the custom profile to be created and selected.
+# To be changed from default - cis_example_profile
+authselect_custom_profile_name: cis_example_profile
+# Name of the existing authselect profile to copy - options can be found with
+# ```authselect list``` on the host to be configured
+authselect_default_profile_to_copy: "sssd --symlink-meta"
+
+pam_faillock_attempts: 5
+pam_faillock_deny: 5
+pam_faillock_interval: 900
+pam_faillock_unlock_time: 900
+pam_faillock_root_unlock_time: 60
+# Choose options below for root options
+pam_faillock_root_option: even_deny_root
+# root_option: "root_unlock_time = {{ root_unlock_time }}"
+
+pam_pwquality_difok: 2
+pam_pwquality_maxrepeat: 3
+pam_pwquality_maxseq: 3
+pam_pwquality_minlen: 14
+pam_pwquality_minclass: 4
+
+pam_pwhistory_remember: 24
+
+pam_pwhash: sha512
+
+pam_pass_inactive: 30
+pam_pass_max_days: 365  # Max 365
+pam_pass_min_days: 7
+pam_pass_warn_age: 7
+
+## Control 4.5.2.3 - Ensure system accounts are secured | Set nologin
+# The system users on this list are allowed to have a shell (e.g. applications
+# that require a shell to function)
+system_users_shell: []
+
+## Set the following to true if you wish to adjust accounts greater than pass['max_days']
+set_max_expiry: false
+
+## Add users to be skipped if required
+user_skip_list:
+  root
+
+root_umask: '0027'  # 0027 or more restrictive
+
+shell_session_file: /etc/profile.d/tmout.sh
+shell_session_timeout: 900
+
+# sugroup
+sugroup: sugroup
+
+# wheel users list
+sugroup_users: "root"
+
+# Its not provider recommended to run changes to pam files manually that affects authentication
+# This control needs to be set to ACCEPT this so that the changes do take place
+# Any other value does nothing
+pamd_manual_risks: NEVER
+
+inactivelock:
+  lock_days: 30
+
+# Allow ansible to expire password for account with a last changed date in the future. False will just display users in violation, true will expire those users passwords
+futurepwchgdate_autofix: true
