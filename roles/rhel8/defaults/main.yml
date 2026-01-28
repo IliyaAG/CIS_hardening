@@ -15,6 +15,7 @@ section1: true
 section2: true
 section3: true
 section4: true
+section5: true
 
 
 
@@ -400,6 +401,84 @@ rule_4_5_2_5: true
 rule_4_5_3_1: true
 rule_4_5_3_2: true
 rule_4_5_3_3: true
+
+##
+## Section 5 rules
+##
+
+# Rsyslog
+rule_5_1_1_1: true
+rule_5_1_1_2: true
+rule_5_1_1_3: true
+rule_5_1_1_4: true
+rule_5_1_1_5: true
+rule_5_1_1_6: true
+rule_5_1_1_7: true
+
+# Journald
+rule_5_1_2_1_1: true
+rule_5_1_2_1_2: true
+rule_5_1_2_1_3: true
+rule_5_1_2_1_4: true
+rule_5_1_2_2: true
+rule_5_1_2_3: true
+rule_5_1_2_4: true
+rule_5_1_2_5: true
+rule_5_1_2_6: true
+rule_5_1_3: true
+rule_5_1_4: true
+
+# Auditd
+rule_5_2_1_1: true
+rule_5_2_1_2: true
+rule_5_2_1_3: true
+rule_5_2_1_4: true
+rule_5_2_2_1: true
+rule_5_2_2_2: true
+rule_5_2_2_3: true
+rule_5_2_2_4: true
+
+# auditd rules
+rule_5_2_3_1: true
+rule_5_2_3_2: true
+rule_5_2_3_3: true
+rule_5_2_3_4: true
+rule_5_2_3_5: true
+rule_5_2_3_6: true
+rule_5_2_3_7: true
+rule_5_2_3_8: true
+rule_5_2_3_9: true
+rule_5_2_3_10: true
+rule_5_2_3_11: true
+rule_5_2_3_12: true
+rule_5_2_3_13: true
+rule_5_2_3_14: true
+rule_5_2_3_15: true
+rule_5_2_3_16: true
+rule_5_2_3_17: true
+rule_5_2_3_18: true
+rule_5_2_3_19: true
+rule_5_2_3_20: true
+rule_5_2_3_21: true
+
+# auditd log perms
+rule_5_2_4_1: true
+rule_5_2_4_2: true
+rule_5_2_4_3: true
+rule_5_2_4_4: true
+rule_5_2_4_5: true
+rule_5_2_4_6: true
+rule_5_2_4_7: true
+rule_5_2_4_8: true
+rule_5_2_4_9: true
+rule_5_2_4_10: true
+
+# AIDE
+
+rule_5_3_1: true
+rule_5_3_2: true
+rule_5_3_3: true
+
 ##
 ## Section 1 vars
 ##
@@ -691,3 +770,100 @@ inactivelock:
 
 # Allow ansible to expire password for account with a last changed date in the future. False will just display users in violation, true will expire those users passwords
 futurepwchgdate_autofix: true
+
+## Section5 vars
+
+## Preferred method of logging
+## Whether rsyslog or journald preferred method for local logging
+syslog: rsyslog
+rsyslog_ansiblemanaged: true
+# Set if system is the log server
+system_is_log_server: false
+
+#### remote and destination log server name
+remote_log_server: false
+remote_log_host: logagg.example.com
+remote_log_port: 514
+remote_log_protocol: tcp
+remote_log_retrycount: 100
+remote_log_queuesize: 1000
+
+update_audit_template: false
+
+# The audit_back_log_limit value should never be below 8192
+auditd_back_log_limit: 8192
+
+# The max_log_file parameter should be based on your sites policy
+auditd_max_log_file_size: 10
+
+auditd_disk_error_action: halt
+auditd_disk_full_action: halt
+auditd_action_mail_acct: root
+auditd_space_left_action: email
+auditd_admin_space_left_action: single
+auditd_max_log_file_action: keep_logs
+
+# UID settings for interactive users
+# These are discovered via logins.def if set true
+discover_int_uid: true
+### Controls:
+# This variable sets the minimum number from which to search for UID
+# Note that the value will be dynamically overwritten if variable `discover_int_uid` has
+# been set to `true`. These are not prefixed with rhel8cis as can be set via prelim
+min_int_uid: 1000
+### Controls:
+# Note that the value will be dynamically overwritten if variable `discover_int_uid` has
+# been set to `true`. These are not prefixed with rhel8cis as can be set via prelim
+max_int_uid: 65533
+
+# This can be used to configure other keys in auditd.conf
+auditd_extra_conf: {}
+# Example:
+# auditd_extra_conf:
+#     admin_space_left: '10%'
+
+## Advanced option found in auditd post
+## users whose actions are not logged by auditd
+allow_auditd_uid_user_exclusions: false
+
+# add a list of uids
+auditd_uid_exclude:
+  - 1999
+
+logrotate: "daily"
+
+# Journald
+# journal_upload_url is the ip address to upload the journal entries to
+journal_upload_url: 192.168.50.42
+# The paths below have the default paths/files, but allow user to create custom paths/filenames
+journal_upload_serverkeyfile: "/etc/ssl/private/journal-upload.pem"
+journal_servercertificatefile: "/etc/ssl/certs/journal-upload.pem"
+journal_trustedcertificatefile: "/etc/ssl/ca/trusted.pem"
+
+# The variables below related to journald, please set these to your site specific values
+# journald_systemmaxuse is the max amount of disk space the logs will use
+journald_systemmaxuse: 10M
+# journald_systemkeepfree is the amount of disk space to keep free
+journald_systemkeepfree: 100G
+journald_runtimemaxuse: 10M
+journald_runtimekeepfree: 100G
+# journald_MaxFileSec is how long in time to keep log files. Values are Xm, Xh, Xday, Xweek, Xmonth, Xyear, for example 2week is two weeks
+journald_maxfilesec: 1month
+
+# logrotate configuration
+# change to true if you wish to change logrotate.d conf files
+allow_logrotate_conf_umask_updates: false
+
+# AIDE
+# aide setup via - cron, timer
+aide_scan: cron
+config_aide: true
+# AIDE cron settings
+aide_cron_user: root
+aide_cron_file: /etc/cron.d/cis_aide
+aide_cron_job: '/usr/sbin/aide --check'
+aide_cron_minute: 0
+aide_cron_hour: 5
+aide_cron_day: '*'
+aide_cron_month: '*'
+aide_cron_weekday: '*'
