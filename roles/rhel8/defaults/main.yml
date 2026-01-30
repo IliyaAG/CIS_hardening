@@ -16,6 +16,7 @@ section2: true
 section3: true
 section4: true
 section5: true
+section6: true
 
 
 
@@ -480,6 +481,39 @@ rule_5_3_2: true
 rule_5_3_3: true
 
 ##
+## Section 6 rules
+##
+
+# System file perms
+rule_6_1_1: true
+rule_6_1_2: true
+rule_6_1_3: true
+rule_6_1_4: true
+rule_6_1_5: true
+rule_6_1_6: true
+rule_6_1_7: true
+rule_6_1_8: true
+rule_6_1_9: true
+rule_6_1_10: true
+rule_6_1_11: true
+rule_6_1_12: true
+rule_6_1_13: true
+rule_6_1_14: true
+
+# local and usergroup
+rule_6_2_1: true
+rule_6_2_2: true
+rule_6_2_3: true
+rule_6_2_4: true
+rule_6_2_5: true
+rule_6_2_6: true
+rule_6_2_7: true
+rule_6_2_8: true
+rule_6_2_9: true
+rule_6_2_10: true
+rule_6_2_11: true
+
+##
 ## Section 1 vars
 ##
 # 1.1.2.2
@@ -867,3 +901,31 @@ aide_cron_hour: 5
 aide_cron_day: '*'
 aide_cron_month: '*'
 aide_cron_weekday: '*'
+
+## Section6 vars
+
+# RHEL-08_6.1.1
+rpm_audit_file: /var/tmp/rpm_file_check
+
+# RHEL-08_6.1.11 Allow ansible to adjust world-writable files. False will just display world-writable files, True will remove world-writable
+no_world_write_adjust: true
+passwd_label: "{{ (this_item | default(item)).id }}: {{ (this_item | default(item)).dir }}"
+
+## 6.1.12 adjust files if ungrouped
+ungrouped_adjust: false
+
+## 6.1.13 Remove suid/sgid from files
+suid_adjust: false
+sgid_adjust: false
+
+# 6.2.8
+## Root user used
+# Root by default is not used unless setup by user
+# The role will only run certain commands if set to true
+# This allows the ability to skip tasks that may cause an issue
+# With the understanding root has full access
+uses_root: false
+
+# 6.2.11
+# Allow changes to take place on system
+dotperm_ansiblemanaged: false
